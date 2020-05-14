@@ -1,0 +1,90 @@
+import pyodbc as db
+import datetime
+
+con = db.connect(
+    'DRIVER={SQL Server Native Client 11.0};SERVER=USMDCEQDB5902,1113;'
+    'Trusted_Connection=yes;DATABASE=JobTrack')
+
+cursor = con.cursor()
+
+# cursor.execute("SELECT @@version;")
+
+
+# Returns all table names from the DB
+def return_all_tables():
+    cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE"
+                   " TABLE_TYPE= 'BASE TABLE';")
+
+    row = cursor.fetchone()
+
+    while row:
+        print(row)
+        row = cursor.fetchone()
+
+
+# Also returns all table names from the DB via a different syntax.
+def info_schema_tables():
+
+    cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES;")
+
+    cursor.execute("SELECT * FROM Job;")
+
+    row = cursor.fetchone()
+
+    while row:
+        print(row)
+        row = cursor.fetchone()
+
+
+# Returns all columns from inside a table.
+
+def pull_colums():
+
+    cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS"
+                   " WHERE TABLE_NAME = 'MessageFolder';")
+
+    row = cursor.fetchone()
+
+    while row:
+        print(row[0])
+        row = cursor.fetchone()
+
+
+# Returns every value from every column in a table.
+def all_values():
+
+    columns = ["JobID", "ClientID", "Title", "Description", "Code",
+               "CodeSequenceNumber", "ReferenceNumber", "CreatedBy", "UpdatedBy",
+               "UpdatedAt", "TimeZoneOffset", "HasDesignBriefData"]
+
+    for k in columns:
+        cursor.execute("SELECT " + k + " FROM Job;")
+
+        row = cursor.fetchone()
+
+        while row:
+            print(row[0])
+            row = cursor.fetchone()
+
+
+# Pull specific items
+def pull_specific():
+
+    cursor.execute("SELECT Description, Code, TimeZoneOffset FROM Job;")
+
+    row = cursor.fetchone()
+
+    while row:
+        print(row)
+        row = cursor.fetchone()
+
+# input()
+
+
+def main():
+
+    pull_colums()
+
+    input()
+
+main()
