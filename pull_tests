@@ -9,7 +9,6 @@ cursor = con.cursor()
 
 # cursor.execute("SELECT @@version;")
 
-
 # Returns all table names from the DB
 def return_all_tables():
     cursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE"
